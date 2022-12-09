@@ -116,9 +116,13 @@ function App() {
                             </div>
                         </div>
                     ))}
-                    <div>
-                        <button className="block m-4 p-2" onClick={addExpert}>Додати експерта</button>
-                        <button className="block m-4 p-2" type="submit">Обчислити результат</button>
+                    <div className="my-8 flex justify-between">
+                        <button onClick={addExpert}
+                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Додати експерта
+                        </button>
+                        <button type="submit"
+                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Обчислити результат
+                        </button>
                     </div>
                 </form>
             </div>
