@@ -64,15 +64,23 @@ function App() {
 
     return (
         <div className="container mx-auto px-2 py-8">
-            <h1 className="inline-block mb-4 text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">Застосування
+            <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
                 методу "Делфі"</h1>
             <div className="my-12">Якісь вказівки</div>
             <div className="my-12">
                 <div className="grid grid-cols-6 text-center">
-                    <div>№ Експерта</div>
-                    <div>Коефіцієнт самооцінки</div>
-                    <div>Рівень обслуговування</div>
-                    <div className="col-end-7 col-span-3">Коментар</div>
+                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                        <p>№ Експерта</p>
+                    </div>
+                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                        <p>Коефіцієнт самооцінки</p>
+                    </div>
+                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                        <p>Рівень обслуговування</p>
+                    </div>
+                    <div className="col-end-7 col-span-3 p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                        <p>Коментар</p>
+                    </div>
                 </div>
                 <form onSubmit={handleSubmit((data) => console.log(data))}>
                     {fields.map((field, index) => (

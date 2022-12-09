@@ -11,6 +11,7 @@ module.exports = {
         },
         colors: {
             'violet': '#594157',
+            'violet-850': '#372936',
             'dbg': '#726DA8', // the name is 'dark-blue-grey'
             'glaucous': '#7D8CC4',
             'powder-blue-350': '#A0D2DB',
