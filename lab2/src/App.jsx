@@ -1,4 +1,5 @@
 import {useFieldArray, useForm} from 'react-hook-form';
+import {AiTwotoneEdit} from 'react-icons/ai';
 import './App.css'
 
 function App() {
@@ -66,41 +67,59 @@ function App() {
         <div className="container mx-auto px-2 py-8">
             <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
                 методу "Делфі"</h1>
-            <div className="my-12">Якісь вказівки</div>
+            <div className="my-12">
+                <ul>
+                    <li>самооцінка експерта оцінка від 1 до 10</li>
+                    <li>оцінка обслуговування від 1 до 100</li>
+                    <li>Дані можуть бути змінені <AiTwotoneEdit size="18" className="inline"/></li>
+                </ul>
+            </div>
             <div className="my-12">
                 <div className="grid grid-cols-6 text-center">
-                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                    <div
+                        className="p-2 flex justify-center items-center border border-solid border-powder-blue-250/50 font-medium">
                         <p>№ Експерта</p>
                     </div>
-                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                    <div
+                        className="p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Коефіцієнт самооцінки</p>
                     </div>
-                    <div className="p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                    <div
+                        className="p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Рівень обслуговування</p>
                     </div>
-                    <div className="col-end-7 col-span-3 p-2 flex justify-center items-center border border-solid border-powder-blue-250 font-medium">
+                    <div
+                        className="col-end-7 col-span-3 p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Коментар</p>
                     </div>
                 </div>
                 <form onSubmit={handleSubmit((data) => console.log(data))}>
                     {fields.map((field, index) => (
                         <div key={field.id}
-                             className="grid grid-cols-6 text-center">
-                            <div>{index + 1}</div>
-                            <div>
-                                <input {...register(`experts.${index}.selfEsteem`)}/>
+                             className="grid grid-cols-6 text-center hover:bg-white/10">
+                            <div
+                                className="p-2 flex justify-center items-center border-l border-r border-b border-solid border-powder-blue-250/50">
+                                <p>{index + 1}</p>
                             </div>
-                            <div>
-                                <input {...register(`experts.${index}.rating`)}/>
+                            <div className="border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
+                                <input {...register(`experts.${index}.selfEsteem`)}
+                                       className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                             </div>
-                            <div className="col-end-7 col-span-3">
-                                <textarea {...register(`experts.${index}.comment`)}></textarea>
+                            <div className="border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
+                                <input {...register(`experts.${index}.rating`)}
+                                       className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
+                            </div>
+                            <div
+                                className="col-end-7 col-span-3 border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
+                                <textarea {...register(`experts.${index}.comment`)}
+                                          className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                             </div>
                         </div>
                     ))}
-                    <button onClick={addExpert}>Додати експерта</button>
-                    <br/>
-                    <button type="submit">Обчислити результат</button>
+                    <div>
+                        <button className="block m-4 p-2" onClick={addExpert}>Додати експерта</button>
+                        <button className="block m-4 p-2" type="submit">Обчислити результат</button>
+                    </div>
                 </form>
             </div>
             <div className="my-12">
