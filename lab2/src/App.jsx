@@ -54,8 +54,16 @@ function App() {
         name: 'experts',
     });
 
+    const addExpert = () => {
+        return append({
+            selfEsteem: '-',
+            rating: '-',
+            comment: ''
+        });
+    };
+
     return (
-        <div className="container mx-auto px-2 my-8">
+        <div className="container mx-auto px-2 py-8">
             <h1 className="inline-block mb-4 text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">Застосування
                 методу "Делфі"</h1>
             <div className="my-12">Якісь вказівки</div>
@@ -82,6 +90,8 @@ function App() {
                             </div>
                         </div>
                     ))}
+                    <button onClick={addExpert}>Додати експерта</button>
+                    <br/>
                     <button type="submit">Обчислити результат</button>
                 </form>
             </div>
