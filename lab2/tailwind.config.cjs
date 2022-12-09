@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+        backgroundImage: {
+            'aqua-pink': 'linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%)',
+        },
         colors: {
             'violet': '#594157',
             'dbg': '#726DA8', // the name is 'dark-blue-grey'
