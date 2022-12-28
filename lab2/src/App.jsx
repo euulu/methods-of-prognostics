@@ -1,8 +1,51 @@
 import {useFieldArray, useForm} from 'react-hook-form';
 import {AiTwotoneEdit} from 'react-icons/ai';
 import './App.css'
+import {useState} from 'react';
 
 function App() {
+    const [data, setData] = useState({});
+    const [results, setResults] = useState({
+        averageGroup: 0,
+        averageResult: 0,
+        averageWeighted: 0,
+        median: 0,
+        lowTrust: 0,
+        highTrust: 0,
+        trustInterval: 0,
+    });
+
+    const handleSetData = (newData) => {
+        const experts = newData.experts;
+
+        setData((prevState) => {
+            return {
+                ...prevState,
+                experts,
+            };
+        });
+    };
+
+    const handleSetResults = (input) => {
+        const groupCount = input.experts.length;
+        const averageGroup = ((input.experts.reduce((a, b) => {
+            return {selfEsteem: a.selfEsteem + b.selfEsteem};
+        })).selfEsteem / groupCount).toFixed(3);
+
+        setResults((prevState) => {
+            return {
+                ...prevState,
+                averageGroup: averageGroup,
+                averageResult: 0,
+                averageWeighted: 0,
+                median: 0,
+                lowTrust: 0,
+                highTrust: 0,
+                trustInterval: 0,
+            };
+        });
+    };
+
     const {control, register, handleSubmit} = useForm({
         defaultValues: {
             experts: [
@@ -57,10 +100,15 @@ function App() {
 
     const addExpert = () => {
         return append({
-            selfEsteem: '-',
-            rating: '-',
+            selfEsteem: 0,
+            rating: 0,
             comment: ''
         });
+    };
+
+    const formSubmit = (newFormData) => {
+        handleSetData(newFormData);
+        handleSetResults(newFormData);
     };
 
     return (
@@ -93,7 +141,7 @@ function App() {
                         <p>Коментар</p>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit((data) => console.log(data))}>
+                <form onSubmit={handleSubmit(formSubmit)}>
                     <div className="border-b border-solid border-powder-blue-250/50">
                         {fields.map((field, index) => (
                             <div key={field.id}>
@@ -104,11 +152,11 @@ function App() {
                                         <p>{index + 1}</p>
                                     </div>
                                     <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                        <input {...register(`experts.${index}.selfEsteem`)}
+                                        <input {...register(`experts.${index}.selfEsteem`, {valueAsNumber: true})}
                                                className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                     </div>
                                     <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                        <input {...register(`experts.${index}.rating`)}
+                                        <input {...register(`experts.${index}.rating`, {valueAsNumber: true})}
                                                className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                     </div>
                                     <div
@@ -133,7 +181,7 @@ function App() {
                 </form>
             </div>
             <div className="my-12">
-                <p>Середньогрупова оцінка: </p>
+                <p>Середньогрупова оцінка: {results.averageGroup}</p>
                 <p>Середнє значення оцінки послуг: </p>
                 <p>Середньозважена оцінка попиту: </p>
                 <p>Медіана: </p>
