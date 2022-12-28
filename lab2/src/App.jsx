@@ -44,7 +44,11 @@ function App() {
         const averageGroup = parseFloat((averageSum / groupCount).toFixed(3));
         const averageResult = parseFloat((resultSum / groupCount).toFixed(3));
         const averageWeighted = parseFloat((avrgResMultiplicationSum / averageSum).toFixed(3));
-        // const median = input.map((expertAnswer) => {});
+        let median = 'Для обчислення медіани потрібна парна кількість експертів.';
+        if (groupCount % 2 === 0) {
+            const middle = groupCount / 2;
+            median = parseFloat(((answerRatingValues[middle - 1] + answerRatingValues[middle]) / 2).toFixed(3));
+        }
         // const lowTrust = input.map((expertAnswer) => {});
         // const highTrust = input.map((expertAnswer) => {});
         // const trustInterval = input.map((expertAnswer) => {});
@@ -55,7 +59,7 @@ function App() {
                 averageGroup: averageGroup,
                 averageResult: averageResult,
                 averageWeighted: averageWeighted,
-                median: 0,
+                median: median,
                 lowTrust: 0,
                 highTrust: 0,
                 trustInterval: 0,
@@ -201,7 +205,7 @@ function App() {
                 <p>Середньогрупова оцінка: {results.averageGroup}</p>
                 <p>Середнє значення оцінки послуг: {results.averageResult}</p>
                 <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
-                <p>Медіана: </p>
+                <p>Медіана: {results.median}</p>
                 <p>Нижня межа довірчої області: . Верхня межа довірчої області: .</p>
                 <p>Довірчий інтервал: .</p>
             </div>
