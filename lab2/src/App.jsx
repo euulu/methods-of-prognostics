@@ -70,7 +70,7 @@ function App() {
         });
     };
 
-    const {control, register, handleSubmit} = useForm({
+    const {control, register, handleSubmit, formState: {errors}} = useForm({
         defaultValues: {
             experts: [
                 {
@@ -126,7 +126,7 @@ function App() {
         return append({
             selfEsteem: 0,
             rating: 0,
-            comment: ''
+            comment: 'Будьласка, залиште ваш відгук.'
         });
     };
 
@@ -141,11 +141,10 @@ function App() {
                 <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
                     методу "Делфі"</h1>
                 <div className="my-12">
-                    <ul>
-                        <li>самооцінка експерта оцінка від 1 до 10</li>
-                        <li>оцінка обслуговування від 1 до 100</li>
-                        <li>Дані можуть бути змінені <AiTwotoneEdit size="18" className="inline"/></li>
-                    </ul>
+                    <ol className="pl-4 list-decimal">
+                        <li>Коефіцієнт самооцінки експерта оцінюється цілими числами від 1 до 10.</li>
+                        <li>Оцінка рівня обслуговування проводиться цілими числами в діапазоні від 1 до 100.</li>
+                    </ol>
                 </div>
                 <div className="my-12">
                     <div className="grid grid-cols-6 text-center">
@@ -177,16 +176,26 @@ function App() {
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                            <input {...register(`experts.${index}.selfEsteem`, {valueAsNumber: true})}
+                                            <input {...register(`experts.${index}.selfEsteem`, {
+                                                valueAsNumber: true,
+                                                min: 1,
+                                                max: 10,
+                                            })}
+                                                   type="number"
                                                    className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                         </div>
                                         <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                            <input {...register(`experts.${index}.rating`, {valueAsNumber: true})}
+                                            <input {...register(`experts.${index}.rating`, {
+                                                valueAsNumber: true,
+                                                min: 1,
+                                                max: 100,
+                                            })}
+                                                   type="number"
                                                    className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                         </div>
                                         <div
-                                            className="col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                <textarea {...register(`experts.${index}.comment`)}
+                                            className={`col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.comment ? 'field-error' : ''}`}>
+                                <textarea {...register(`experts.${index}.comment`, {required: true})}
                                           className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                                         </div>
                                     </div>
@@ -210,9 +219,12 @@ function App() {
                     <p>Середнє значення оцінки послуг: {results.averageResult}</p>
                     <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
                     <p>Медіана: {results.median}</p>
-                    <p>Нижня межа довірчої області: {results.lowTrust}%. Верхня межа довірчої області: {results.highTrust}%.</p>
+                    <p>Нижня межа довірчої області: {results.lowTrust}%. Верхня межа довірчої
+                        області: {results.highTrust}%.</p>
                     <p>Довірчий інтервал: {results.trustInterval}%.</p>
-                    {results.trustInterval > 20 && <p>Довірчий інтервал виходить за межі максимально допустимого. Необхідно провести переголосування.</p>}
+                    {results.trustInterval > 20 &&
+                        <p>Довірчий інтервал виходить за межі максимально допустимого. Необхідно провести
+                            переголосування.</p>}
                 </div>
             </div>
         </div>

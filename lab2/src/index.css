@@ -11,4 +11,8 @@
     h1, h2, h3, h4, h5, h6 {
         color: #334155;
     }
+
+    .field-error {
+        border: 1px solid red !important;
+    }
 }
