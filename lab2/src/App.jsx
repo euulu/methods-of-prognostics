@@ -27,12 +27,26 @@ function App() {
     };
 
     const handleSetResults = (input) => {
+        // Calculate basic values of submitted data for the upcoming calculations.
         const experts = input.experts;
         const groupCount = experts.length;
-        const averageGroup = (experts.reduce((a, b) => ({selfEsteem: a.selfEsteem + b.selfEsteem}))
-            .selfEsteem / groupCount).toFixed(3);
-        const averageResult = (experts.reduce((a, b) => ({rating: a.rating + b.rating}))
-            .rating / groupCount).toFixed(3);
+        const groupRatingValues = experts.map((expertData) => expertData.selfEsteem);
+        const answerRatingValues = experts.map((expertData) => expertData.rating);
+
+        // Sum of the expert and answer ratings.
+        const averageSum = groupRatingValues.reduce((a, b) => (a + b));
+        const resultSum = answerRatingValues.reduce((a, b) => (a + b));
+
+        // Result data calculations.
+        const averageGroup = parseFloat((averageSum / groupCount).toFixed(3));
+        const averageResult = parseFloat((resultSum / groupCount).toFixed(3));
+        const averageWeighted = experts.reduce((a, b) => {
+
+        });
+        // const median = input.map((expertAnswer) => {});
+        // const lowTrust = input.map((expertAnswer) => {});
+        // const highTrust = input.map((expertAnswer) => {});
+        // const trustInterval = input.map((expertAnswer) => {});
 
         setResults((prevState) => {
             return {
@@ -183,8 +197,8 @@ function App() {
                 </form>
             </div>
             <div className="my-12">
-                <p>Середньогрупова оцінка: {parseFloat(results.averageGroup)}</p>
-                <p>Середнє значення оцінки послуг: {parseFloat(results.averageResult)}</p>
+                <p>Середньогрупова оцінка: {results.averageGroup}</p>
+                <p>Середнє значення оцінки послуг: {results.averageResult}</p>
                 <p>Середньозважена оцінка попиту: </p>
                 <p>Медіана: </p>
                 <p>Нижня межа довірчої області: . Верхня межа довірчої області: .</p>
