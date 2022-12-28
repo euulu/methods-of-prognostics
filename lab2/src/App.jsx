@@ -36,13 +36,14 @@ function App() {
         // Sum of the expert and answer ratings.
         const averageSum = groupRatingValues.reduce((a, b) => (a + b));
         const resultSum = answerRatingValues.reduce((a, b) => (a + b));
+        const avrgResMultiplicationSum = groupRatingValues
+            .map((rating, index) => rating * answerRatingValues[index])
+            .reduce((a, b) => a + b);
 
         // Result data calculations.
         const averageGroup = parseFloat((averageSum / groupCount).toFixed(3));
         const averageResult = parseFloat((resultSum / groupCount).toFixed(3));
-        const averageWeighted = experts.reduce((a, b) => {
-
-        });
+        const averageWeighted = parseFloat((avrgResMultiplicationSum / averageSum).toFixed(3));
         // const median = input.map((expertAnswer) => {});
         // const lowTrust = input.map((expertAnswer) => {});
         // const highTrust = input.map((expertAnswer) => {});
@@ -53,7 +54,7 @@ function App() {
                 ...prevState,
                 averageGroup: averageGroup,
                 averageResult: averageResult,
-                averageWeighted: 0,
+                averageWeighted: averageWeighted,
                 median: 0,
                 lowTrust: 0,
                 highTrust: 0,
@@ -199,7 +200,7 @@ function App() {
             <div className="my-12">
                 <p>Середньогрупова оцінка: {results.averageGroup}</p>
                 <p>Середнє значення оцінки послуг: {results.averageResult}</p>
-                <p>Середньозважена оцінка попиту: </p>
+                <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
                 <p>Медіана: </p>
                 <p>Нижня межа довірчої області: . Верхня межа довірчої області: .</p>
                 <p>Довірчий інтервал: .</p>
