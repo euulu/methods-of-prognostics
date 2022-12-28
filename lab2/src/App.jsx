@@ -32,6 +32,9 @@ function App() {
         const groupCount = experts.length;
         const groupRatingValues = experts.map((expertData) => expertData.selfEsteem);
         const answerRatingValues = experts.map((expertData) => expertData.rating);
+        const lowestAnswer = Math.min(...answerRatingValues);
+        const highestAnswer = Math.max(...answerRatingValues);
+        const quartile = (highestAnswer - lowestAnswer) / 4;
 
         // Sum of the expert and answer ratings.
         const averageSum = groupRatingValues.reduce((a, b) => (a + b));
@@ -49,9 +52,9 @@ function App() {
             const middle = groupCount / 2;
             median = parseFloat(((answerRatingValues[middle - 1] + answerRatingValues[middle]) / 2).toFixed(3));
         }
-        // const lowTrust = input.map((expertAnswer) => {});
-        // const highTrust = input.map((expertAnswer) => {});
-        // const trustInterval = input.map((expertAnswer) => {});
+        const lowTrust = parseFloat((lowestAnswer + quartile).toFixed(3));
+        const highTrust = parseFloat((highestAnswer - quartile).toFixed(3));
+        const trustInterval = input.map((expertAnswer) => {});
 
         setResults((prevState) => {
             return {
@@ -60,8 +63,8 @@ function App() {
                 averageResult: averageResult,
                 averageWeighted: averageWeighted,
                 median: median,
-                lowTrust: 0,
-                highTrust: 0,
+                lowTrust: lowTrust,
+                highTrust: highTrust,
                 trustInterval: 0,
             };
         });
@@ -133,81 +136,83 @@ function App() {
     };
 
     return (
-        <div className="container mx-auto px-2 py-8">
-            <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
-                методу "Делфі"</h1>
-            <div className="my-12">
-                <ul>
-                    <li>самооцінка експерта оцінка від 1 до 10</li>
-                    <li>оцінка обслуговування від 1 до 100</li>
-                    <li>Дані можуть бути змінені <AiTwotoneEdit size="18" className="inline"/></li>
-                </ul>
-            </div>
-            <div className="my-12">
-                <div className="grid grid-cols-6 text-center">
-                    <div
-                        className="p-2 flex justify-center items-center border-t border-r border-l border-solid border-powder-blue-250/50 font-medium">
-                        <p>№ Експерта</p>
-                    </div>
-                    <div
-                        className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
-                        <p>Коефіцієнт самооцінки</p>
-                    </div>
-                    <div
-                        className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
-                        <p>Рівень обслуговування</p>
-                    </div>
-                    <div
-                        className="col-end-7 col-span-3 p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
-                        <p>Коментар</p>
-                    </div>
+        <div className="bg-white/80">
+            <div className="container mx-auto px-2 py-8">
+                <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
+                    методу "Делфі"</h1>
+                <div className="my-12">
+                    <ul>
+                        <li>самооцінка експерта оцінка від 1 до 10</li>
+                        <li>оцінка обслуговування від 1 до 100</li>
+                        <li>Дані можуть бути змінені <AiTwotoneEdit size="18" className="inline"/></li>
+                    </ul>
                 </div>
-                <form onSubmit={handleSubmit(formSubmit)}>
-                    <div className="border-b border-solid border-powder-blue-250/50">
-                        {fields.map((field, index) => (
-                            <div key={field.id}>
-                                <div
-                                    className="grid grid-cols-6 text-center border-l border-t border-solid border-powder-blue-250/50 hover:bg-white/10">
+                <div className="my-12">
+                    <div className="grid grid-cols-6 text-center">
+                        <div
+                            className="p-2 flex justify-center items-center border-t border-r border-l border-solid border-powder-blue-250/50 font-medium">
+                            <p>№ Експерта</p>
+                        </div>
+                        <div
+                            className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
+                            <p>Коефіцієнт самооцінки</p>
+                        </div>
+                        <div
+                            className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
+                            <p>Рівень обслуговування</p>
+                        </div>
+                        <div
+                            className="col-end-7 col-span-3 p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
+                            <p>Коментар</p>
+                        </div>
+                    </div>
+                    <form onSubmit={handleSubmit(formSubmit)}>
+                        <div className="border-b border-solid border-powder-blue-250/50">
+                            {fields.map((field, index) => (
+                                <div key={field.id}>
                                     <div
-                                        className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
-                                        <p>{index + 1}</p>
-                                    </div>
-                                    <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                        <input {...register(`experts.${index}.selfEsteem`, {valueAsNumber: true})}
-                                               className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
-                                    </div>
-                                    <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
-                                        <input {...register(`experts.${index}.rating`, {valueAsNumber: true})}
-                                               className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
-                                    </div>
-                                    <div
-                                        className="col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                        className="grid grid-cols-6 text-center border-l border-t border-solid border-powder-blue-250/50 hover:bg-white/10">
+                                        <div
+                                            className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
+                                            <p>{index + 1}</p>
+                                        </div>
+                                        <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                            <input {...register(`experts.${index}.selfEsteem`, {valueAsNumber: true})}
+                                                   className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
+                                        </div>
+                                        <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                            <input {...register(`experts.${index}.rating`, {valueAsNumber: true})}
+                                                   className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
+                                        </div>
+                                        <div
+                                            className="col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10">
                                 <textarea {...register(`experts.${index}.comment`)}
                                           className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="my-8 flex justify-between">
-                        <button onClick={addExpert}
-                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Додати
-                            експерта
-                        </button>
-                        <button type="submit"
-                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Обчислити
-                            результат
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div className="my-12">
-                <p>Середньогрупова оцінка: {results.averageGroup}</p>
-                <p>Середнє значення оцінки послуг: {results.averageResult}</p>
-                <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
-                <p>Медіана: {results.median}</p>
-                <p>Нижня межа довірчої області: . Верхня межа довірчої області: .</p>
-                <p>Довірчий інтервал: .</p>
+                            ))}
+                        </div>
+                        <div className="my-8 flex justify-between">
+                            <button onClick={addExpert}
+                                    className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Додати
+                                експерта
+                            </button>
+                            <button type="submit"
+                                    className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Обчислити
+                                результат
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div className="my-12">
+                    <p>Середньогрупова оцінка: {results.averageGroup}</p>
+                    <p>Середнє значення оцінки послуг: {results.averageResult}</p>
+                    <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
+                    <p>Медіана: {results.median}</p>
+                    <p>Нижня межа довірчої області: {results.lowTrust}%. Верхня межа довірчої області: {results.highTrust}%.</p>
+                    <p>Довірчий інтервал: .</p>
+                </div>
             </div>
         </div>
     )
