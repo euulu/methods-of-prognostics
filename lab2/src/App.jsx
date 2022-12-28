@@ -27,10 +27,10 @@ function App() {
     };
 
     const handleSetResults = (input) => {
-        const groupCount = input.experts.length;
-        const averageGroup = ((input.experts.reduce((a, b) => {
-            return {selfEsteem: a.selfEsteem + b.selfEsteem};
-        })).selfEsteem / groupCount).toFixed(3);
+        const experts = input.experts;
+        const groupCount = experts.length;
+        const averageGroup = (experts.reduce((a, b) => ({selfEsteem: a.selfEsteem + b.selfEsteem}))
+            .selfEsteem / groupCount).toFixed(3);
 
         setResults((prevState) => {
             return {
