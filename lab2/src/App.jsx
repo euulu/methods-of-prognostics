@@ -77,51 +77,57 @@ function App() {
             <div className="my-12">
                 <div className="grid grid-cols-6 text-center">
                     <div
-                        className="p-2 flex justify-center items-center border border-solid border-powder-blue-250/50 font-medium">
+                        className="p-2 flex justify-center items-center border-t border-r border-l border-solid border-powder-blue-250/50 font-medium">
                         <p>№ Експерта</p>
                     </div>
                     <div
-                        className="p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
+                        className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Коефіцієнт самооцінки</p>
                     </div>
                     <div
-                        className="p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
+                        className="p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Рівень обслуговування</p>
                     </div>
                     <div
-                        className="col-end-7 col-span-3 p-2 flex justify-center items-center border-r border-b border-t border-solid border-powder-blue-250/50 font-medium">
+                        className="col-end-7 col-span-3 p-2 flex justify-center items-center border-r border-t border-solid border-powder-blue-250/50 font-medium">
                         <p>Коментар</p>
                     </div>
                 </div>
                 <form onSubmit={handleSubmit((data) => console.log(data))}>
-                    {fields.map((field, index) => (
-                        <div key={field.id}
-                             className="grid grid-cols-6 text-center hover:bg-white/10">
-                            <div
-                                className="p-2 flex justify-center items-center border-l border-r border-b border-solid border-powder-blue-250/50">
-                                <p>{index + 1}</p>
-                            </div>
-                            <div className="border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
-                                <input {...register(`experts.${index}.selfEsteem`)}
-                                       className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
-                            </div>
-                            <div className="border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
-                                <input {...register(`experts.${index}.rating`)}
-                                       className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
-                            </div>
-                            <div
-                                className="col-end-7 col-span-3 border-r border-b border-powder-blue-250/50 flex hover:bg-white/10">
+                    <div className="border-b border-solid border-powder-blue-250/50">
+                        {fields.map((field, index) => (
+                            <div key={field.id}>
+                                <div
+                                    className="grid grid-cols-6 text-center border-l border-t border-solid border-powder-blue-250/50 hover:bg-white/10">
+                                    <div
+                                        className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
+                                        <p>{index + 1}</p>
+                                    </div>
+                                    <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                        <input {...register(`experts.${index}.selfEsteem`)}
+                                               className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
+                                    </div>
+                                    <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                        <input {...register(`experts.${index}.rating`)}
+                                               className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
+                                    </div>
+                                    <div
+                                        className="col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10">
                                 <textarea {...register(`experts.${index}.comment`)}
                                           className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                     <div className="my-8 flex justify-between">
                         <button onClick={addExpert}
-                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Додати експерта
+                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Додати
+                            експерта
                         </button>
                         <button type="submit"
-                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Обчислити результат
+                                className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">Обчислити
+                            результат
                         </button>
                     </div>
                 </form>
