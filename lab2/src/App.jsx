@@ -54,7 +54,7 @@ function App() {
         }
         const lowTrust = parseFloat((lowestAnswer + quartile).toFixed(3));
         const highTrust = parseFloat((highestAnswer - quartile).toFixed(3));
-        const trustInterval = input.map((expertAnswer) => {});
+        const trustInterval = highTrust - lowTrust;
 
         setResults((prevState) => {
             return {
@@ -65,7 +65,7 @@ function App() {
                 median: median,
                 lowTrust: lowTrust,
                 highTrust: highTrust,
-                trustInterval: 0,
+                trustInterval: trustInterval,
             };
         });
     };
@@ -211,7 +211,8 @@ function App() {
                     <p>Середньозважена оцінка попиту: {results.averageWeighted}</p>
                     <p>Медіана: {results.median}</p>
                     <p>Нижня межа довірчої області: {results.lowTrust}%. Верхня межа довірчої області: {results.highTrust}%.</p>
-                    <p>Довірчий інтервал: .</p>
+                    <p>Довірчий інтервал: {results.trustInterval}%.</p>
+                    {results.trustInterval > 20 && <p>Довірчий інтервал виходить за межі максимально допустимого. Необхідно провести переголосування.</p>}
                 </div>
             </div>
         </div>
