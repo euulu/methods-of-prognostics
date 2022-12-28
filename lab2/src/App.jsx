@@ -31,12 +31,14 @@ function App() {
         const groupCount = experts.length;
         const averageGroup = (experts.reduce((a, b) => ({selfEsteem: a.selfEsteem + b.selfEsteem}))
             .selfEsteem / groupCount).toFixed(3);
+        const averageResult = (experts.reduce((a, b) => ({rating: a.rating + b.rating}))
+            .rating / groupCount).toFixed(3);
 
         setResults((prevState) => {
             return {
                 ...prevState,
                 averageGroup: averageGroup,
-                averageResult: 0,
+                averageResult: averageResult,
                 averageWeighted: 0,
                 median: 0,
                 lowTrust: 0,
@@ -181,8 +183,8 @@ function App() {
                 </form>
             </div>
             <div className="my-12">
-                <p>Середньогрупова оцінка: {results.averageGroup}</p>
-                <p>Середнє значення оцінки послуг: </p>
+                <p>Середньогрупова оцінка: {parseFloat(results.averageGroup)}</p>
+                <p>Середнє значення оцінки послуг: {parseFloat(results.averageResult)}</p>
                 <p>Середньозважена оцінка попиту: </p>
                 <p>Медіана: </p>
                 <p>Нижня межа довірчої області: . Верхня межа довірчої області: .</p>
