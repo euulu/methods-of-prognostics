@@ -1,5 +1,4 @@
 import {useFieldArray, useForm} from 'react-hook-form';
-import {AiTwotoneEdit} from 'react-icons/ai';
 import './App.css'
 import {useState} from 'react';
 
@@ -15,8 +14,18 @@ function App() {
         trustInterval: 0,
     });
 
+    const saveData = (experts) => {
+        experts.forEach((expert, index) => {
+            const expertSavedData = JSON.parse(localStorage.getItem(index)) || [];
+            expertSavedData.push(expert);
+            localStorage.setItem(index, JSON.stringify(expertSavedData));
+        });
+    };
+
     const handleSetData = (newData) => {
         const experts = newData.experts;
+
+        saveData(experts);
 
         setData((prevState) => {
             return {
@@ -137,7 +146,7 @@ function App() {
 
     return (
         <div className="bg-white/80">
-            <div className="container mx-auto px-2 py-8">
+            <div className="container max-w-screen-lg mx-auto px-2 py-8">
                 <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
                     методу "Делфі"</h1>
                 <div className="my-12">
@@ -196,8 +205,9 @@ function App() {
                                         </div>
                                         <div
                                             className={`col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.comment ? 'field-error' : ''}`}>
-                                <textarea {...register(`experts.${index}.comment`, {required: true})}
-                                          className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
+                                            <textarea
+                                                {...register(`experts.${index}.comment`, {required: true})}
+                                                className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                                         </div>
                                     </div>
                                 </div>
