@@ -185,7 +185,7 @@ function App() {
                                             className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                        <div className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.selfEsteem ? 'field-error' : ''}`}>
                                             <input {...register(`experts.${index}.selfEsteem`, {
                                                 valueAsNumber: true,
                                                 min: 1,
@@ -194,7 +194,7 @@ function App() {
                                                    type="number"
                                                    className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                         </div>
-                                        <div className="border-r border-powder-blue-250/50 flex hover:bg-white/10">
+                                        <div className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.rating ? 'field-error' : ''}`}>
                                             <input {...register(`experts.${index}.rating`, {
                                                 valueAsNumber: true,
                                                 min: 1,
@@ -210,9 +210,9 @@ function App() {
                                                 className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                                         </div>
                                     </div>
-                                    {localStorage.getItem(index) && <div className="pb-2 border-t border-dashed border-powder-blue-250/50">
+                                    {localStorage.getItem(index) && <div className="py-2 border-t border-dashed border-powder-blue-250/50">
                                         {JSON.parse(localStorage.getItem(index)).map((pollAnswer, i) => (
-                                            <div key={i} className="grid grid-cols-6 text-center">
+                                            <div key={i} className="grid grid-cols-6 text-center text-sm">
                                                 <p className="col-start-2 text-gray-400">{pollAnswer.selfEsteem}</p>
                                                 <p className="text-gray-400">{pollAnswer.rating}</p>
                                                 <p className="col-end-7 col-span-3 pl-2 text-left text-gray-400">{pollAnswer.comment}</p>
