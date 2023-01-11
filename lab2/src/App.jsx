@@ -3,7 +3,6 @@ import './App.css'
 import {useState} from 'react';
 
 function App() {
-    const [data, setData] = useState({});
     const [results, setResults] = useState({
         averageGroup: 0,
         averageResult: 0,
@@ -14,24 +13,13 @@ function App() {
         trustInterval: 0,
     });
 
-    const savePollData = (experts) => {
+    const setPollData = (newData) => {
+        const experts = newData.experts;
+
         experts.forEach((expert, index) => {
             const expertSavedData = JSON.parse(localStorage.getItem(index)) || [];
             expertSavedData.push(expert);
             localStorage.setItem(index, JSON.stringify(expertSavedData));
-        });
-    };
-
-    const handleSetData = (newData) => {
-        const experts = newData.experts;
-
-        savePollData(experts);
-
-        setData((prevState) => {
-            return {
-                ...prevState,
-                experts,
-            };
         });
     };
 
@@ -140,7 +128,7 @@ function App() {
     };
 
     const formSubmit = (newFormData) => {
-        handleSetData(newFormData);
+        setPollData(newFormData);
         handleSetResults(newFormData);
     };
 
@@ -254,6 +242,15 @@ function App() {
                             переголосування.</p>}
                     {results.trustInterval < 20 &&
                         <p>Довірчий інтервал знаходиться в межах допустимого. Опитування може бути припинено.</p>}
+                </div>
+                <div>
+                    <button onClick={() => {
+                        localStorage.clear();
+                        window.location.reload();
+                    }}
+                            className="block px-5 py-3 rounded-md border border-solid border-powder-blue-250/50 bg-white/20 hover:bg-white/50">
+                        Почати нове опитування(скинути результати)
+                    </button>
                 </div>
             </div>
         </div>
