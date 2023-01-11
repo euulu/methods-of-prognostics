@@ -150,7 +150,11 @@ function App() {
                 <h1 className="inline-block mb-4 text-2xl sm:text-3xl text-violet-850 font-extrabold tracking-tight dark:text-slate-200">Застосування
                     методу "Делфі"</h1>
                 <div className="my-12">
+                    <h3>Карта таблиці</h3>
                     <ol className="pl-4 list-decimal">
+                        <li>Значення в колонках "Коефіцієнт самооцінки", "Рівень обслуговування" та "Коментар" можуть
+                            бути змінені.
+                        </li>
                         <li>Коефіцієнт самооцінки експерта оцінюється цілими числами від 1 до 10.</li>
                         <li>Оцінка рівня обслуговування проводиться цілими числами в діапазоні від 1 до 100.</li>
                         <li>Ваш коментар щодо відпочинку є обов'язковим до заповнення.</li>
@@ -185,7 +189,8 @@ function App() {
                                             className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.selfEsteem ? 'field-error' : ''}`}>
+                                        <div
+                                            className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.selfEsteem ? 'field-error' : ''}`}>
                                             <input {...register(`experts.${index}.selfEsteem`, {
                                                 valueAsNumber: true,
                                                 min: 1,
@@ -194,7 +199,8 @@ function App() {
                                                    type="number"
                                                    className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                         </div>
-                                        <div className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.rating ? 'field-error' : ''}`}>
+                                        <div
+                                            className={`border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.rating ? 'field-error' : ''}`}>
                                             <input {...register(`experts.${index}.rating`, {
                                                 valueAsNumber: true,
                                                 min: 1,
@@ -210,15 +216,16 @@ function App() {
                                                 className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                                         </div>
                                     </div>
-                                    {localStorage.getItem(index) && <div className="py-2 border-t border-dashed border-powder-blue-250/50">
-                                        {JSON.parse(localStorage.getItem(index)).map((pollAnswer, i) => (
-                                            <div key={i} className="grid grid-cols-6 text-center text-sm">
-                                                <p className="col-start-2 text-gray-400">{pollAnswer.selfEsteem}</p>
-                                                <p className="text-gray-400">{pollAnswer.rating}</p>
-                                                <p className="col-end-7 col-span-3 pl-2 text-left text-gray-400">{pollAnswer.comment}</p>
-                                            </div>
-                                        ))}
-                                    </div>}
+                                    {localStorage.getItem(index) &&
+                                        <div className="py-2 border-t border-dashed border-powder-blue-250/50">
+                                            {JSON.parse(localStorage.getItem(index)).map((pollAnswer, i) => (
+                                                <div key={i} className="grid grid-cols-6 text-center text-sm">
+                                                    <p className="col-start-2 text-gray-400">{pollAnswer.selfEsteem}</p>
+                                                    <p className="text-gray-400">{pollAnswer.rating}</p>
+                                                    <p className="col-end-7 col-span-3 pl-2 text-left text-gray-400">{pollAnswer.comment}</p>
+                                                </div>
+                                            ))}
+                                        </div>}
                                 </div>
                             ))}
                         </div>
@@ -245,6 +252,8 @@ function App() {
                     {results.trustInterval > 20 &&
                         <p>Довірчий інтервал виходить за межі максимально допустимого. Необхідно провести
                             переголосування.</p>}
+                    {results.trustInterval < 20 &&
+                        <p>Довірчий інтервал знаходиться в межах допустимого. Опитування може бути припинено.</p>}
                 </div>
             </div>
         </div>
