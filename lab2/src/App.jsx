@@ -14,7 +14,7 @@ function App() {
         trustInterval: 0,
     });
 
-    const saveData = (experts) => {
+    const savePollData = (experts) => {
         experts.forEach((expert, index) => {
             const expertSavedData = JSON.parse(localStorage.getItem(index)) || [];
             expertSavedData.push(expert);
@@ -25,7 +25,7 @@ function App() {
     const handleSetData = (newData) => {
         const experts = newData.experts;
 
-        saveData(experts);
+        savePollData(experts);
 
         setData((prevState) => {
             return {
@@ -178,9 +178,9 @@ function App() {
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <div className="border-b border-solid border-powder-blue-250/50">
                             {fields.map((field, index) => (
-                                <div key={field.id}>
+                                <div key={field.id} className="border-x border-solid border-powder-blue-250/50">
                                     <div
-                                        className="grid grid-cols-6 text-center border-l border-t border-solid border-powder-blue-250/50 hover:bg-white/10">
+                                        className="grid grid-cols-6 text-center border-t border-solid border-powder-blue-250/50 hover:bg-white/10">
                                         <div
                                             className="p-2 flex justify-center items-center border-r border-solid border-powder-blue-250/50">
                                             <p>{index + 1}</p>
@@ -204,12 +204,21 @@ function App() {
                                                    className="px-1 inline-block w-full text-center bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"/>
                                         </div>
                                         <div
-                                            className={`col-end-7 col-span-3 border-r border-powder-blue-250/50 flex hover:bg-white/10 ${errors.experts?.[index]?.comment ? 'field-error' : ''}`}>
+                                            className={`col-end-7 col-span-3 flex hover:bg-white/10 ${errors.experts?.[index]?.comment ? 'field-error' : ''}`}>
                                             <textarea
                                                 {...register(`experts.${index}.comment`, {required: true})}
                                                 className="px-2 py-1 inline-block w-full bg-transparent active:bg-white/20 focus:bg-white/20 outline-none"></textarea>
                                         </div>
                                     </div>
+                                    {localStorage.getItem(index) && <div className="pb-2 border-t border-dashed border-powder-blue-250/50">
+                                        {JSON.parse(localStorage.getItem(index)).map((pollAnswer, i) => (
+                                            <div key={i} className="grid grid-cols-6 text-center">
+                                                <p className="col-start-2 text-gray-400">{pollAnswer.selfEsteem}</p>
+                                                <p className="text-gray-400">{pollAnswer.rating}</p>
+                                                <p className="col-end-7 col-span-3 pl-2 text-left text-gray-400">{pollAnswer.comment}</p>
+                                            </div>
+                                        ))}
+                                    </div>}
                                 </div>
                             ))}
                         </div>
