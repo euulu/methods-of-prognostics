@@ -3,7 +3,7 @@ import {useFieldArray, useForm} from 'react-hook-form';
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts';
 
 function App() {
-    const [realValues, setRealValues] = useState([17322.6, 17657.8, 18504.5, 19357, 20573, 20800.8, 21042.7]);
+    const [realValues, setRealValues] = useState([18504.5, 19357, 20573, 20800.8, 21042.7, 21244.38, 21287.7]);
     const [calculatedValues, setCalculatedValues] = useState(['-', '-', '-', '-', '-']);
 
     const {control, register, handleSubmit, formState: {errors}} = useForm({
