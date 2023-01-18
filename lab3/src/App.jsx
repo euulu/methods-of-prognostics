@@ -1,6 +1,6 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useFieldArray, useForm} from 'react-hook-form';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts';
 
 function App() {
     const [realValues, setRealValues] = useState([17322.6, 17657.8, 18504.5, 19357, 20573, 20800.8, 21042.7]);
@@ -17,9 +17,7 @@ function App() {
         name: 'values',
     });
 
-    const formSubmit = (data) => {
-        const values = data ? data.values : [...calculatedValues];
-        setRealValues((prevState) => [...values]);
+    const calculatePredictionValues = (values) => {
         const predictedValues = [];
         const f5 = parseFloat(((values[0] * 8 + values[1] * 12 + values[2] * 20 + values[3] * 60) / 100).toFixed(1));
         const f6 = parseFloat(((values[1] * 8 + values[2] * 12 + values[3] * 20 + values[4] * 60) / 100).toFixed(1));
@@ -27,14 +25,42 @@ function App() {
         const f8 = parseFloat(((values[3] * 8 + values[4] * 12 + values[5] * 20 + values[6] * 60) / 100).toFixed(1));
         const f9 = parseFloat(((values[4] * 8 + values[5] * 12 + values[6] * 20 + f8 * 60) / 100).toFixed(1));
         predictedValues.push(f5, f6, f7, f8, f9);
+        return [...predictedValues];
+    };
+
+    const formSubmit = (data) => {
+        const values = data.values;
+        setRealValues((prevState) => [...values]);
         setCalculatedValues((prevState) => {
-            return [...predictedValues];
+            return calculatePredictionValues(values);
         });
     };
 
-    const data = realValues.map((value, index) => {
-        return {name: index + 1, uv: value};
+    useEffect(() => {
+        setCalculatedValues((prevState) => {
+            return calculatePredictionValues(realValues);
+        });
+    }, []);
+
+    const chartRealValData = realValues.map((value, index) => {
+        return {category: index + 1, value: value};
     });
+    const chartPredictedValData = calculatedValues.map((value, index) => {
+        return {category: 5 + index, value: value};
+    });
+
+    const series = [
+        {
+            name: 'Ціна',
+            data: chartRealValData,
+            color: '#000',
+        },
+        {
+            name: 'Розраховане ЗКС',
+            data: chartPredictedValData,
+            color: '#8884d8'
+        },
+    ];
 
     return (
         <div className="container max-w-screen-lg mx-auto px-2 py-8">
@@ -45,7 +71,9 @@ function App() {
                 <ol className="pl-4 list-decimal">
                     <li>Початкові значення заповнені актуальними, на момент здачі лабораторної даними.</li>
                     <li>Початкові дані можуть бути змінені корустувачем вручну.</li>
-                    <li>Для розрахунку значення на момент часу 9 використовується розраховане зважене ковзне середнє для моменту часу 8.</li>
+                    <li>Для розрахунку значення на момент часу 9 використовується розраховане зважене ковзне середнє для
+                        моменту часу 8.
+                    </li>
                 </ol>
             </div>
             <form onSubmit={handleSubmit(formSubmit)}>
@@ -61,7 +89,7 @@ function App() {
                     <div>7</div>
                     <div>8</div>
                     <div>9</div>
-                    <div className="col-span-2 text-left">Значення у момент часу</div>
+                    <div className="col-span-2 text-left">Значення у момент часу(ціна)</div>
                     {fields.map((field, index) => (
                         <div key={field.id}>
                             <input {...register(`values.${index}`)}
@@ -82,15 +110,27 @@ function App() {
                     ))}
                 </div>
                 <button type="submit"
-                        className="mt-8 block px-5 py-3 border border-solid border-black hover:bg-gray-50">Розрахувати</button>
+                        className="mt-8 block px-5 py-3 border border-solid border-black hover:bg-gray-50">Розрахувати
+                </button>
             </form>
             <div className="mt-8">
-                <LineChart width={600} height={300} data={data}>
-                    <Line type="monotone" dataKey="uv" stroke="#000" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
+                <LineChart width={700} height={400}>
+                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
+                    <XAxis dataKey="category"
+                           type="category"
+                           allowDuplicatedCategory={false}
+                           padding={{left: 30, right: 30}}/>
+                    <YAxis dataKey="value"
+                           domain={['dataMin - 500', 'dataMax + 500']}
+                           ticks={[17000, 19000, 21000]}/>
+                    <Tooltip/>
+                    <Legend verticalAlign="bottom" height={36}/>
+                    {series.map((line) => (
+                        <Line type="monotone"
+                              dataKey="value"
+                              data={line.data} name={line.name} key={line.name}
+                              stroke={line.color}/>
+                    ))}
                 </LineChart>
             </div>
         </div>
