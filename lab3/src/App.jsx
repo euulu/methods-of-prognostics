@@ -122,7 +122,7 @@ function App() {
                            padding={{left: 30, right: 30}}/>
                     <YAxis dataKey="value"
                            domain={['dataMin - 500', 'dataMax + 500']}
-                           ticks={[17000, 19000, 21000]}/>
+                           ticks={[18000, 19000, 20000, 21000]}/>
                     <Tooltip/>
                     <Legend verticalAlign="bottom" height={36}/>
                     {series.map((line) => (
